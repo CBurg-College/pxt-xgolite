@@ -348,8 +348,11 @@ namespace CXgoLite {
                 break;
             case Message.Pause:
                 PAUSE = true
+                stopMoving()
+                xgo.servo_setting_robotArm(xgo.servo_switch_enum.Unload)
                 break;
             case Message.Continue:
+                xgo.servo_setting_robotArm(xgo.servo_switch_enum.Load)
                 PAUSE = false
                 break;
             case Message.FastWave:
@@ -549,8 +552,6 @@ namespace CXgoLite {
     //% block.loc.nl="onderbreek volger-programma's"
     export function pauseFollowers() {
         radio.sendNumber(Message.Pause)
-        basic.pause(100)
-        radio.sendNumber(Message.Stop)
     }
 
     //% block="do a %wave wave"
