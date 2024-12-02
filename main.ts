@@ -549,6 +549,8 @@ namespace CXgoLite {
     //% block.loc.nl="onderbreek volger-programma's"
     export function pauseFollowers() {
         radio.sendNumber(Message.Pause)
+        basic.pause(100)
+        radio.sendNumber(Message.Stop)
     }
 
     //% block="do a %wave wave"
