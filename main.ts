@@ -349,10 +349,8 @@ namespace CXgoLite {
             case Message.Pause:
                 PAUSE = true
                 stopMoving()
-                xgo.servo_setting_robotArm(xgo.servo_switch_enum.Unload)
                 break;
             case Message.Continue:
-                xgo.servo_setting_robotArm(xgo.servo_switch_enum.Load)
                 PAUSE = false
                 break;
             case Message.FastWave:
