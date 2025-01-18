@@ -29,7 +29,6 @@ namespace CXgoLite {
         SlowWave,
 
         Action,         // perform a standard action
-        Activity,       // inform follower to perform a numbered activity
 
         Forward,        // move in the specified direction
         Backward,
@@ -66,39 +65,17 @@ namespace CXgoLite {
     }
 
     let MESSAGE: number = -1
-    let ACTIVITY: number = 0
     let PAUSE: boolean = false
-
-    ///////////////////////
-    // A STAND ALONE XGO //
-    ///////////////////////
-
-    // The routine 'setPlayer' is called with parameter
-    // 'Player.Alone'.
 
     //////////////////////////////
     // SEVERAL XGO'S IN A GROUP //
     //////////////////////////////
 
-    // A group consists of one leader and several followers.
-
-    // A follower needs not to be programmed as it receives
-    // instructions from the leader.
-    // Followers only need to be initialized by three blocks:
+    // In a group a rider should call:
     // - setGroup, specifying the group it is committed to.
     // - setPosition, specifying the position within the group.
     // The position in the group determines the waiting time
     // when an instruction must be performed in 'wave'-mode.
-
-    // On the other hand, a follower may be programmed, even
-    // if it belongs to a group. To avoid mixed activity by
-    // the own and received instructions, a leader should
-    // call 'pauseFollowers' before sending messages and
-    // call 'continueFollowers' when done.
-
-    // The leader must be initialized too and
-    // will be programmed. 
-    // - setGroup, specifying the group it is committed to.
 
     export enum Position {
         //% block="position 1"
@@ -283,13 +260,6 @@ namespace CXgoLite {
             MESSAGE = MOVEMENT
         }
 
-        // Instead of 'Message.Activity', this message is submitted by
-        // the calculated value of '500 + required activity'.
-        if (MESSAGE >= 500) {
-            ACTIVITY = MESSAGE - 500
-            MESSAGE = Message.Activity
-        }
-
         // The messages 'Message.FastWave', 'Message.NormalWave'
         // and 'Message.SlowWave' only set the WAVE variable
         // depending on the follower's position.
@@ -307,13 +277,6 @@ namespace CXgoLite {
                 break
             case Message.Wait:
                 basic.pause(wait * 1000)
-                break
-            case Message.Pause:
-                PAUSE = true
-                stopMoving()
-                break
-            case Message.Continue:
-                PAUSE = false
                 break
             case Message.FastWave:
                 WAVE = (POSITION - 1) * 0.3
@@ -416,25 +379,16 @@ namespace CXgoLite {
             case Message.Crawl: xgo.execution_action(xgo.action_enum.Crawl_forward); break;
             case Message.Stretch: xgo.execution_action(xgo.action_enum.Stretch_oneself); break;
             case Message.Squat: xgo.execution_action(xgo.action_enum.Squat); break;
-            //
-            // NO NEED TO HANDLE Message.Activity HERE
-            //
         }
         MESSAGE = -1
     }
 
-    function playerID(): void {
-        if (POSITION) {
-            basic.showString("P")
-            basic.showNumber(POSITION)
-        }
-        else
-            basic.showString("L")
-        basic.showIcon(IconNames.Happy)
+    function showPosition(): void {
+        basic.showString("P" + POSITION.toString())
     }
 
     input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-        playerID()
+        showPosition()
     })
 
     ////////////////////////
@@ -453,24 +407,6 @@ namespace CXgoLite {
         POSITION = pos + 1
     }
 
-    //% block="position %player"
-    //% block.loc.nl="positie %player"
-    export function isPosition(): number {
-        return POSITION
-    }
-
-    //% block="continue follower programs"
-    //% block.loc.nl="hervat volger-programma's"
-    export function continueFollowers() {
-        radio.sendNumber(Message.Continue)
-    }
-
-    //% block="suspend follower programs"
-    //% block.loc.nl="onderbreek volger-programma's"
-    export function pauseFollowers() {
-        radio.sendNumber(Message.Pause)
-    }
-
     //% block="do a %wave wave"
     //% block.loc.nl="maak een %wave wave"
     export function setWave(wave: Wave) {
@@ -479,31 +415,6 @@ namespace CXgoLite {
             case Wave.Normal: MESSAGE = Message.NormalWave; break;
             case Wave.Fast: MESSAGE = Message.FastWave; break;
         }
-        if (!PAUSE) handleMessage()
-    }
-
-    //% block="activity"
-    //% block.loc.nl="activiteit"
-    export function activity(): number {
-        return ACTIVITY
-    }
-
-    //% block="activity %activity"
-    //% block.loc.nl="activiteit %activity"
-    //% activity.min=1 activity.max=100 activity.defl=1
-    export function isActivity(activity: number): boolean {
-        if (ACTIVITY == activity) {
-            ACTIVITY = 0
-            return true
-        }
-        return false
-    }
-
-    //% block="perform activity %activity"
-    //% block.loc.nl="doe activiteit %activity"
-    //% activity.min=1 activity.max=100 activity.defl=1
-    export function performActivity(activity: number) {
-        MESSAGE = 500 + activity;
         if (!PAUSE) handleMessage()
     }
 
