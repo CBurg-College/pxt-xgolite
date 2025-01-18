@@ -1,4 +1,4 @@
-//% color="#00CC00" icon="\u2B88"
+//% color="#00CC00" icon="\uf1f9"
 //% block="XGO Lite"
 //% block.loc.nl="XGO Lite"
 namespace CXgoLite {
@@ -12,10 +12,6 @@ namespace CXgoLite {
     // The XGo is programmed by means of messages.
     // The available messages are enumerated in 'Message'
     // and are executed by the routine 'handleMessage'.
-    // This is the case for stand alone programming and
-    // the programming of a group of XGo's.
-    // The handling of messages by a single routine garantees
-    // that leader and follower XGo's act exactly identical.
 
     enum Message {
 
