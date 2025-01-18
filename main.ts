@@ -423,11 +423,6 @@ namespace CXgoLite {
         MESSAGE = -1
     }
 
-    radio.onReceivedNumber(function (receivedNumber: number) {
-        MESSAGE = receivedNumber
-        handleMessage()
-    })
-
     function playerID(): void {
         if (POSITION) {
             basic.showString("P")
