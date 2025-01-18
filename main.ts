@@ -3,6 +3,8 @@
 //% block.loc.nl="XGO Lite"
 namespace CXgoLite {
 
+    xgo.init_xgo_serial(SerialPin.P14, SerialPin.P13)
+
     //////////////
     // MESSAGES //
     //////////////
@@ -78,79 +80,25 @@ namespace CXgoLite {
     // SEVERAL XGO'S IN A GROUP //
     //////////////////////////////
 
-    // The routine 'setPlayer' is called with parameter
-    // 'Player.Leader', 'Player.Controller' or 'Player.Follower'.
-
     // A group consists of one leader and several followers.
-    // The leader does not be an XGO, but can be a controller.
 
     // A follower needs not to be programmed as it receives
-    // instructions from the master.
+    // instructions from the leader.
     // Followers only need to be initialized by three blocks:
     // - setGroup, specifying the group it is committed to.
-    // - setPlayer, using parameter 'Player.Follower'.
     // - setPosition, specifying the position within the group.
     // The position in the group determines the waiting time
     // when an instruction must be performed in 'wave'-mode.
 
     // On the other hand, a follower may be programmed, even
     // if it belongs to a group. To avoid mixed activity by
-    // the own and received instructions, a leader or controller
-    // should call 'pauseFollowers' before sending messages and
-    // call 'continueFollower' when done.
+    // the own and received instructions, a leader should
+    // call 'pauseFollowers' before sending messages and
+    // call 'continueFollowers' when done.
 
-    // The leader or controller must be initialized too and
+    // The leader must be initialized too and
     // will be programmed. 
     // - setGroup, specifying the group it is committed to.
-    // - setPlayer, using parameter 'Player.Leader' or
-    //              'Player.Controller'.
-
-    // The initial commitment to a group cannot be changed.
-
-    export enum Group {
-        //% block="group 1"
-        //% block.loc.nl="groep 1"
-        Group1,
-        //% block="group 2"
-        //% block.loc.nl="groep 2"
-        Group2,
-        //% block="group 3"
-        //% block.loc.nl="groep 3"
-        Group3,
-        //% block="group 4"
-        //% block.loc.nl="groep 4"
-        Group4,
-        //% block="group 5"
-        //% block.loc.nl="groep 5"
-        Group5,
-        //% block="group 6"
-        //% block.loc.nl="groep 6"
-        Group6,
-        //% block="group 7"
-        //% block.loc.nl="groep 7"
-        Group7,
-        //% block="group 8"
-        //% block.loc.nl="groep 8"
-        Group8,
-        //% block="group 9"
-        //% block.loc.nl="groep 9"
-        Group9
-    }
-
-    export enum Player {
-        //% block="alone"
-        //% block.loc.nl="alleen"
-        Alone,
-        //% block="as the leader"
-        //% block.loc.nl="de leider"
-        Leader,
-        //% block="as a follower"
-        //% block.loc.nl="een volger"
-        Follower,
-        //% block="as a controller"
-        //% block.loc.nl="de controller"
-        Controller
-    }
 
     export enum Position {
         //% block="position 1"
@@ -194,9 +142,7 @@ namespace CXgoLite {
         Fast
     }
 
-    let GROUP: number = 1
-    let PLAYER: Player = Player.Alone
-    let POSITION: number = 1
+    let POSITION: number = 0 // leader
     let WAVE: number = 0
 
     /////////////////////////
@@ -317,11 +263,10 @@ namespace CXgoLite {
 
     function handleMessage() {
 
-        if (PLAYER == Player.Leader || PLAYER == Player.Controller) {
+        // A leader sends its movements to the followers
+        if (!POSITION)
             radio.sendNumber(MESSAGE)
-            if (PLAYER == Player.Controller)
-                return;
-        }
+
         // Instead of 'Message.Wait', this message is submitted by
         // the calculated value of '10000 + wait time'.
         let wait = 0
@@ -479,36 +424,18 @@ namespace CXgoLite {
     }
 
     radio.onReceivedNumber(function (receivedNumber: number) {
-        if (PLAYER == Player.Follower) {
-            MESSAGE = receivedNumber
-            handleMessage()
-        }
+        MESSAGE = receivedNumber
+        handleMessage()
     })
 
     function playerID(): void {
-
-        if (PLAYER == Player.Alone)
-            basic.showString("A")
-        else {
-            basic.showString("G")
-            basic.showNumber(GROUP)
+        if (POSITION) {
+            basic.showString("P")
+            basic.showNumber(POSITION)
         }
-
-        switch (PLAYER) {
-            case Player.Follower:
-                basic.showString("P")
-                basic.showNumber(POSITION)
-                break;
-            case Player.Leader:
-                basic.showString("L")
-                break
-            case Player.Controller:
-                basic.showString("C")
-                break;
-        }
-        if (PLAYER != Player.Controller) {
-            basic.showIcon(IconNames.Happy)
-        }
+        else
+            basic.showString("L")
+        basic.showIcon(IconNames.Happy)
     }
 
     input.onLogoEvent(TouchButtonEvent.Pressed, function () {
@@ -518,19 +445,6 @@ namespace CXgoLite {
     ////////////////////////
     // PROGRAMMING BLOCKS //
     ////////////////////////
-
-    //% block="group"
-    //% block.loc.nl="groep"
-    export function group(): number {
-        return GROUP
-    }
-
-    //% block="join %group"
-    //% block.loc.nl="sluit aan bij %group"
-    export function setGroup(group: Group) {
-        GROUP = group + 1
-        radio.setGroup(GROUP)
-    }
 
     //% block="position"
     //% block.loc.nl="positie"
@@ -544,24 +458,10 @@ namespace CXgoLite {
         POSITION = pos + 1
     }
 
-    //% block="show player info"
-    //% block.loc.nl="toon speler info"
-    export function showPlayerID() {
-        playerID()
-    }
-
-    //% block="plays %player ?"
-    //% block.loc.nl="speelt %player ?"
-    export function isPlayer(player: Player): boolean {
-        return (player == PLAYER)
-    }
-
-    //% block="play %player"
-    //% block.loc.nl="speel %player"
-    export function setPlayer(player: Player) {
-        if (player != Player.Controller)
-            xgo.init_xgo_serial(SerialPin.P14, SerialPin.P13)
-        PLAYER = player
+    //% block="position %player"
+    //% block.loc.nl="positie %player"
+    export function isPosition(): number {
+        return POSITION
     }
 
     //% block="continue follower programs"
