@@ -603,7 +603,7 @@ namespace CXgoLite {
         if (!PAUSE) handleMessage()
     }
 
-    //% block="a number from %min utai %max"
+    //% block="a number from %min upto %max"
     //% block.loc.nl="een getal van %min t/m %max"
     //% max.defl=10
     export function randomInt(min: number, max: number): number {
