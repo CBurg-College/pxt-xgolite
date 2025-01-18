@@ -213,10 +213,10 @@ namespace CXgoLite {
 
     // Clamp range
     // -----------
-    // Minimum value: 0 (equal to 22.5 mm)
-    // Maximum value: 255 (equal to 53.0 mm)
-    let CLAMPCLOSED: number = 0
-    let CLAMPOPEN: number = 255
+    // Minimum value: 0 (equal to 53.0 mm)
+    // Maximum value: 255 (equal to 22.5 mm)
+    let CLAMPCLOSED: number = 255
+    let CLAMPOPEN: number = 0
 
     export enum Action {
         //% block="stand up"
