@@ -4,8 +4,7 @@
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "microphone": "*",
-        "XGO": "github:elecfreaks/pxt-xgo#v1.3.9"
+        "microphone": "*"
     },
     "files": [
         "main.blocks",
