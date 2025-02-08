@@ -1,4 +1,5 @@
 namespace xgo {
+
     /*
     The xgo code is copied from the ElecFreaks 'pxt-xgo' library:
     https://github.com/elecfreaks/pxt-xgo/blob/master/main.ts
@@ -6,171 +7,110 @@ namespace xgo {
     */
 
     export enum rotate_enum {
-        //% block="Left"
         Left,
-        //% block="Right"
         Right
     }
 
     export enum direction_enum {
-        //% block="Forward"
         Forward,
-        //% block="Backward"
         Backward,
-        //% block="left"
         Left,
-        //% block="Right"
         Right
     }
 
     export enum speed_frequency_enum {
-        //% block="servo speed"
         servo_speed,
-        //% block="stepped frequency"
         stepped_frequency
     }
 
     export enum speed_enum {
-        //% block="fast"
         fast = 0xf0,
-        //% block="normal"
         normal = 0x80,
-        //% block="slow"
         slow = 0x10
     }
 
     export enum translation_direction_enum {
-        //% block="forward(0mm~25mm)"
         Forward,
-        //% block="backward(-25mm~0mm)"
         Backward,
-        //% block="left-shift(0mm~18mm)"
         left_shift,
-        //% block="right-shift(-18mm~0mm)"
         right_shift
     }
 
     export enum rotate_direction_enum {
-        //% block="left-turn"
         turn_left,
-        //% block="right-turn"
         turn_right
     }
 
     export enum orientation_enum {
-        //% block="X"
         X,
-        //% block="Y"
         Y,
-        //% block="Z"
         Z
     }
 
     export enum body_direction_xyz_enum {
-        //% block="X"
         X,
-        //% block="Y"
         Y,
-        //% block="Z"
         Z
     }
 
     export enum translation_xyz_enum {
-        //% block="X(-35mm~35mm)"
         X,
-        //% block="Y(-18mm~18mm)"
         Y,
-        //% block="Z(75mm~115mm)"
         Z
     }
 
     export enum switch_enum {
-        //% block="Turn on"
         Turn_on,
-        //% block="Turn off"
         Turn_off
     }
 
     export enum servo_switch_enum {
-        //% block="load"
         Load,
-        //% block="unload"
         Unload
     }
 
     export enum body_parts_enum {
-        //% block="left front"
         left_front,
-        //% block="left hind"
         left_hind,
-        //% block="right front"
         right_front,
-        //% block="right hind"
         right_hind
     }
 
     export enum joint_enum {
-        //% block="upper"
         upper,
-        //% block="middle"
         middle,
-        //% block="below"
         below
     }
 
     export enum turn_joint_enum {
-        //% block="upper(-30~30)"
         upper,
-        //% block="middle(-70~90)"
         middle,
-        //% block="below(-70~50)"
         below
     }
     export enum clmap_stable_enum {
-        //% block="stable"
         Stable,
-        //% block="unstable"
         Unstable
     }
 
     export enum action_enum {
-        //% block="Default_posture"
         Default_posture,
-        //% block="Go_prone"
         Go_prone,
-        //% block="Stand"
         Stand,
-        //% block="Crawl_forward"
         Crawl_forward,
-        //% block="Whirl"
         Whirl,
-        //% block="Sur_place"
         Sur_place,
-        //% block="Squat"
         Squat,
-        //% block="Twirl_Roll"
         Twirl_Roll,
-        //% block="Twirl_Pitch"
         Twirl_Pitch,
-        //% block="Twirl_Yaw"
         Twirl_Yaw,
-        //% block="Triaxial_rotation"
         Triaxial_rotation,
-        //% block="Pee"
         Pee,
-        //% block="Sit_down"
         Sit_down,
-        //% block="Wave"
         Wave,
-        //% block="Stretch_oneself"
         Stretch_oneself,
-        //% block="Play_pendulum"
         Play_pendulum,
-        //% block="Request_feeding"
         Request_feeding,
-        //% block="Looking_for_food"
         Looking_for_food,
-        //% block="Handshake"
         Handshake
     }
 
@@ -193,27 +133,11 @@ namespace xgo {
     let pose4zx = pins.createBuffer(23)
     let pose5zx = pins.createBuffer(23)
 
-    //////////----------------------------------- Basic--------------------------------/////////
-    /**
-     * Basic
-     */
-
-    /**
-    * TODO: initialization xgo
-    * @param tx describe parameter here, eg: SerialPin.P2
-    * @param rx describe parameter here, eg: SerialPin.P1
-    */
-    //% group="Basic"
-    //% block="set XGO|TX %tx|RX %rx"
-    //% weight=204
     export function init_xgo_serial(tx: SerialPin, rx: SerialPin) {
         serial.redirect(tx, rx, BaudRate.BaudRate115200)
         xgo.init_action()
     }
 
-    //% group="Basic"
-    //% block="Execution action %action"
-    //% weight=199
     export function execution_action(action: action_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -342,9 +266,6 @@ namespace xgo {
         }
     }
 
-    //% group="Basic"
-    //% block="restore initial action"
-    //% weight=198
     export function init_action() {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -360,9 +281,6 @@ namespace xgo {
         basic.pause(1000)
     }
 
-    //% group="Basic"
-    //% weight=193
-    //% block="%on_off the dynamic balance mode"
     export function gyroscope_switch(on_off: switch_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -384,9 +302,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Basic"
-    //% weight=196
-    //%block="get XGO's current power"
     export function get_electric_quantity(): number {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -404,9 +319,6 @@ namespace xgo {
         return read_data_buffer[5]
     }
 
-    //% group="Basic"
-    //% weight=198
-    //%block="get XGO's version"
     export function get_version(): string {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -425,14 +337,6 @@ namespace xgo {
         return version
     }
 
-    //////////----------------------------------- SetServo--------------------------------/////////
-    /**
-     * SetServo
-     */
-
-    //% group="Set Servo"
-    //% weight=194
-    //% block="set XGO %part leg servo %on_off"
     export function servo_setting(part: body_parts_enum, on_off: servo_switch_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -443,28 +347,28 @@ namespace xgo {
         commands_buffer[7] = 0x00
         commands_buffer[8] = 0xAA
         switch (part) {
-            //左前
+
             case body_parts_enum.left_front:
                 if (on_off == servo_switch_enum.Load)
                     commands_buffer[5] = 0x21
                 else
                     commands_buffer[5] = 0x11
                 break
-            //左后
+
             case body_parts_enum.left_hind:
                 if (on_off == servo_switch_enum.Load)
                     commands_buffer[5] = 0x24
                 else
                     commands_buffer[5] = 0x14
                 break
-            //右前
+
             case body_parts_enum.right_front:
                 if (on_off == servo_switch_enum.Load)
                     commands_buffer[5] = 0x22
                 else
                     commands_buffer[5] = 0x12
                 break
-            //右后
+
             case body_parts_enum.right_hind:
                 if (on_off == servo_switch_enum.Load)
                     commands_buffer[5] = 0x23
@@ -477,9 +381,6 @@ namespace xgo {
         basic.pause(50)
     }
 
-    //% group="Set Servo"
-    //% weight=176
-    //%block="set %speed_frequency speed to %speed"
     export function set_speed_frequency(speed_frequency: speed_frequency_enum, speed: speed_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -505,9 +406,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Set Servo"
-    //% block="body height %height\\%"
-    //% height.min=0 height.max=100
     export function body_height(height: number) {
         let height_buffer = pins.createBuffer(9)
         if (height > 100)
@@ -527,10 +425,6 @@ namespace xgo {
         basic.pause(2000)
     }
 
-    //% group="Set Servo"
-    /*设置机器狗为"pose1"状态*/
-    //% weight=166
-    //% block="Setting the XGO to %posestate state"
     export function SetPosestate(posestate: pose_enum) {
         let commands_buffer = pins.createBuffer(9)
         let reset_buffer = pins.createBuffer(9)
@@ -582,7 +476,7 @@ namespace xgo {
             default:
                 break
         }
-        /*1将"UsingBuffer"设置为夹爪状态*/
+
         commands_buffer[0] = 0x55
         commands_buffer[1] = 0x00
         commands_buffer[2] = 0x09
@@ -594,7 +488,7 @@ namespace xgo {
         commands_buffer[8] = 0xAA
         serial.writeBuffer(commands_buffer)
         basic.pause(50)
-        /*1将"UsingBuffer"设置为夹爪X轴位置*/
+
         commands_buffer[0] = 0x55
         commands_buffer[1] = 0x00
         commands_buffer[2] = 0x09
@@ -606,7 +500,7 @@ namespace xgo {
         commands_buffer[8] = 0xAA
         serial.writeBuffer(commands_buffer)
         basic.pause(50)
-        /*1将"UsingBuffer"设置为夹爪Z轴位置*/
+
         commands_buffer[0] = 0x55
         commands_buffer[1] = 0x00
         commands_buffer[2] = 0x09
@@ -629,7 +523,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x52
-                    /*1将"UsingBuffer"设置为机器狗当前状态,左前，上*/
+
                     commands_buffer[5] = UsingBuffer[7]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -641,7 +535,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x51
-                    /*2将"UsingBuffer"设置为机器狗当前状态，左前，中*/
+
                     commands_buffer[5] = UsingBuffer[6]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -653,7 +547,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x50
-                    /*3将"UsingBuffer"设置为机器狗当前状态，左前，下*/
+
                     commands_buffer[5] = UsingBuffer[5]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -667,7 +561,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x5B
-                    /*4将"UsingBuffer"设置为机器狗当前状态，左后，上*/
+
                     commands_buffer[5] = UsingBuffer[16]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -679,7 +573,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x5A
-                    /*5将"UsingBuffer"设置为机器狗当前状态，左后，中*/
+
                     commands_buffer[5] = UsingBuffer[15]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -691,7 +585,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x59
-                    /*6将"UsingBuffer"设置为机器狗当前状态，左后，下*/
+
                     commands_buffer[5] = UsingBuffer[14]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -705,7 +599,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x55
-                    /*7将"UsingBuffer"设置为机器狗当前状态，右前，上*/
+
                     commands_buffer[5] = UsingBuffer[10]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -717,7 +611,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x54
-                    /*8将"UsingBuffer"设置为机器狗当前状态，右前，中*/
+
                     commands_buffer[5] = UsingBuffer[9]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -729,7 +623,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x53
-                    /*9将"UsingBuffer"设置为机器狗当前状态，右前，下*/
+
                     commands_buffer[5] = UsingBuffer[8]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -743,7 +637,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x58
-                    /*10将"UsingBuffer"设置为机器狗当前状态，右后，上*/
+
                     commands_buffer[5] = UsingBuffer[13]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -755,7 +649,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x57
-                    /*11将"UsingBuffer"设置为机器狗当前状态，右后，中*/
+
                     commands_buffer[5] = UsingBuffer[12]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -767,7 +661,7 @@ namespace xgo {
                     commands_buffer[7] = 0x00
                     commands_buffer[8] = 0xAA
                     commands_buffer[4] = 0x56
-                    /*12将"UsingBuffer"设置为机器狗当前状态，右后，下*/
+
                     commands_buffer[5] = UsingBuffer[11]
                     commands_buffer[6] = ~(0x09 + 0x00 + commands_buffer[4] + commands_buffer[5])
                     serial.writeBuffer(commands_buffer)
@@ -778,13 +672,6 @@ namespace xgo {
 
     }
 
-
-
-    //% group="Set Servo"
-    /*将机器狗当前状态记录为"pose1"
-    */
-    //% weight=200
-    //% block="Record the current status of the XGO as %posestate"
     export function GetPosestate(posestate: pose_enum) {
         let commands_buffer = pins.createBuffer(9)
         let read_data_buffer = pins.createBuffer(23)
@@ -840,9 +727,6 @@ namespace xgo {
 
     }
 
-    //% group="Set Servo"
-    //% weight=200
-    //% block="get the servo Angle of the %joint %part leg joint"
     export function get_servo_angle(part: body_parts_enum, joint: joint_enum) {
         let commands_buffer = pins.createBuffer(9)
         basic.pause(50)
@@ -895,9 +779,6 @@ namespace xgo {
         }
     }
 
-    //% group="Set Servo"
-    //% weight=193
-    //% block="%on_off all XGO servo"
     export function servo_switch(on_off: servo_switch_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -920,15 +801,6 @@ namespace xgo {
         basic.pause(50)
     }
 
-    //////////----------------------------------- Sports--------------------------------/////////
-    /**
-     * Sports
-     */
-
-    //% group="Sports"
-    //% weight=192
-    //% block="set XGO to rotate around the %direction_xyz axis with a period of %period seconds"
-    //% period.min=3 period.max=8
     export function rotate_angle_reel_reciprocate(direction_xyz: body_direction_xyz_enum, period: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -957,9 +829,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=190
-    //% block="stop the periodic rotation of XGO around the %direction_xyz axis"
     export function rotate_angle_reel_reciprocate_stop(direction_xyz: body_direction_xyz_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -984,10 +853,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=188
-    //% block="set XGO to be rotated %angle degrees about the %direction_xyz axis"
-    //% angle.min=-20 angle.max=20
     export function rotate_angle_reel(direction_xyz: body_direction_xyz_enum, angle: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1019,9 +884,6 @@ namespace xgo {
         basic.pause(2000)
     }
 
-    //% group="Sports"
-    //% weight=187
-    //% block="stop the periodic translation of XGO in the  %direction_xyz direction"
     export function translational_motion_reciprocate_stop(direction_xyz: body_direction_xyz_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1046,10 +908,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=186
-    //% block="set XGO to move back and forth in the %direction_xyz direction with a period of %period seconds"
-    //% period.min=2  period.max=8
     export function translational_motion_reciprocate(direction_xyz: body_direction_xyz_enum, period: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1078,10 +936,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=185
-    //% block="set the XGO's body to pan %distance mm in the %direction_xyz direction"
-    //% distance.min=-35  distance.max=115
     export function translational_motion(direction_xyz: translation_xyz_enum, distance: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1121,10 +975,6 @@ namespace xgo {
         basic.pause(2000)
     }
 
-    //% group="Sports"
-    //% weight=184
-    //% block="set XGO execution to run in place at a fixed frequency at a leg lift height of %mm mm for %time seconds"
-    //% mm.min=11 mm.max=35
     export function leg_lift_continue(mm: number, time: number) {
         let commands_buffer = pins.createBuffer(9)
         if (mm > 35)
@@ -1147,10 +997,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=183
-    //% block="set XGO execution to run in place at a fixed frequency at a leg lift height of %mm mm"
-    //% mm.min=11 mm.max=35
     export function leg_lift(mm: number) {
         let commands_buffer = pins.createBuffer(9)
         if (mm > 35)
@@ -1169,10 +1015,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=188
-    //% block="set XGO to perform a %direction rotation at a speed of %speed degrees per second for %time seconds"
-    //% speed.min=0 speed.max=150
     export function rotate_angle_continue(direction: rotate_direction_enum, speed: number, time: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1202,10 +1044,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=181
-    //% block="set XGO to perform a %direction rotation at a speed of %speed degrees per second"
-    //% speed.min=0 speed.max=150
     export function rotate_angle(direction: rotate_direction_enum, speed: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1231,10 +1069,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=186
-    //%block="set XGO to perform a %direction translational motion with a step size of %step mm for %time seconds"
-    //% step.min=5 step.max=25
     export function translational_step_continue(direction: translation_direction_enum, step: number, time: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1273,10 +1107,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=179
-    //%block="set XGO to perform a %direction translational motion with a step size of %step mm"
-    //% step.min=5 step.max=25
     export function translational_step(direction: translation_direction_enum, step: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1311,12 +1141,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% group="Sports"
-    //% weight=181
-    //%block="set the X position of the tip of the %part leg to%location_x, Y position to%location_y, Z position to%location_z"
-    //% location_x.min=-35  location_x.max=35
-    //% location_y.min=-18  location_y.max=18
-    //% location_z.min=75  location_z.max=115
     export function single_leg(part: body_parts_enum, location_x: number, location_y: number, location_z: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1401,10 +1225,6 @@ namespace xgo {
     }
 
 
-    //% group="Sports"
-    //% weight=177
-    //%block="set %part leg %joint servo to %angle"
-    //% angle.min=-70  angle.max=90
     export function set_servo_angle(part: body_parts_enum, joint: turn_joint_enum, angle: number) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1475,10 +1295,6 @@ namespace xgo {
         basic.pause(2000)
     }
 
-    //% group="Sports"
-    //% weight=176
-    //% block="move%direction speed %speed\\%"
-    //% speed.min=0 speed.max=100
     export function move_xgo(direction: direction_enum, speed: number) {
         let move_buffer = pins.createBuffer(9)
         move_buffer[0] = 0x55
@@ -1516,10 +1332,6 @@ namespace xgo {
         serial.writeBuffer(move_buffer)
     }
 
-    //% group="Sports"
-    //% weight=175
-    //% block="rotate %direction,speed is %speed\\%"
-    //% speed.min=0 speed.max=100
     export function rotate(direction: rotate_enum, speed: number) {
         let rotate_buffer = pins.createBuffer(9)
         rotate_buffer[0] = 0x55
@@ -1546,17 +1358,6 @@ namespace xgo {
         serial.writeBuffer(rotate_buffer)
     }
 
-
-    //////////----------------------------------- Robot Arm(V2)--------------------------------/////////
-    /**
-     * Robot Arm(V2)
-     */
-
-    //% group="Robot Arm(V2)"
-    /*夹爪X轴*/
-    //% weight=169
-    //% block="Set the position of the manipulator clampX %mm mm"
-    //% mm.min=0 mm.max=100 
     export function Manipulator_clampX(mm: number = 50) {
         let commands_buffer = pins.createBuffer(9)
         if (mm > 100)
@@ -1576,11 +1377,6 @@ namespace xgo {
         basic.pause(3000)
     }
 
-    //% group="Robot Arm(V2)"
-    /*夹爪Z轴*/
-    //% weight=168
-    //% block="Set the position of the manipulator clampZ %mm mm"
-    //% mm.min=0 mm.max=100
     export function Manipulator_clampZ(mm: number) {
         let commands_buffer = pins.createBuffer(9)
         if (mm > 100)
@@ -1600,11 +1396,6 @@ namespace xgo {
         basic.pause(3000)
     }
 
-    //% group="Robot Arm(V2)"
-    /*机械臂夹子*/
-    //% weight=168
-    //% block="Set the position of the manipulator clamp %mm mm"
-    //% mm.min=0 mm.max=255
     export function Manipulator_clamp(mm: number) {
         let commands_buffer = pins.createBuffer(9)
         if (mm > 255)
@@ -1624,9 +1415,6 @@ namespace xgo {
         basic.pause(3000)
     }
 
-    //% group="Robot Arm(V2)"
-    //% weight=166
-    //% block="clmap stable is %on_off"
     export function clmap_stable(on_off: clmap_stable_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1648,9 +1436,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-    //% weight=192
-    //% deprecated=true
-    //% block="%on_off XGO performance mode"
     export function performance_model_switch(on_off: switch_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
@@ -1672,14 +1457,6 @@ namespace xgo {
         serial.writeBuffer(commands_buffer)
     }
 
-
-    /*
-    设置机械臂舵机"加载"
-    Set the state of robot arm servo as "load"
-     */
-    //% group="Robot Arm(V2)"
-    //% weight=194
-    //% block="Set the state of robot arm servo as %on_off"
     export function servo_setting_robotArm(on_off: servo_switch_enum) {
         let commands_buffer = pins.createBuffer(9)
         commands_buffer[0] = 0x55
