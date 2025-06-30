@@ -1837,11 +1837,9 @@ namespace CXgoLite {
                 break
             case Message.ClampClose:
                 xgo.Manipulator_clamp(CLAMPCLOSED)
-basic.showNumber(CLAMPCLOSED)
                 break
             case Message.ClampOpen:
                 xgo.Manipulator_clamp(CLAMPOPEN)
-basic.showNumber(CLAMPOPEN)
                 break
             //
             // XGO STANDARD ACTIONS
