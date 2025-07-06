@@ -1478,7 +1478,7 @@ namespace xgo {
 
 }
 
-//% color="#00CC00" icon="\uf1f9"
+//% color="#FF8800" icon="\uf1f9"
 //% block="XGO Lite"
 //% block.loc.nl="XGO Lite"
 namespace CXgoLite {
@@ -1872,6 +1872,7 @@ namespace CXgoLite {
     ////////////////////////
 
     //% subcategory="Robotarm"
+    //% color="#FFCC00"
     //% block="clamp size: closes to %closed mm and opens to %open mm width"
     //% block.loc.nl="grijper afmeting: sluit tot %closed mm en opent tot %open mm breedte"
     //% closed.min=25 closed.max=50.0 closed.defl=25
@@ -1892,6 +1893,7 @@ namespace CXgoLite {
     }
 
     //% subcategory="Robotarm"
+    //% color="#FFCC00"
     //% block="%state the clamp"
     //% block.loc.nl="%state de grijper"
     export function clamp(state: ClampState) {
@@ -1903,6 +1905,7 @@ namespace CXgoLite {
     }
 
     //% subcategory="Robotarm"
+    //% color="#FFCC00"
     //% block="move the arm %move"
     //% block.loc.nl="beweeg de arm %move"
     export function moveArm(position: ArmPosition) {
@@ -1916,6 +1919,7 @@ namespace CXgoLite {
     }
 
     //% subcategory="Wave"
+    //% color="#004488"
     //% block="position"
     //% block.loc.nl="positie"
     export function position(): number {
@@ -1923,6 +1927,7 @@ namespace CXgoLite {
     }
 
     //% subcategory="Wave"
+    //% color="#004488"
     //% block="follow at %pos"
     //% block.loc.nl="volg op %pos"
     export function setPosition(pos: Position) {
@@ -1930,6 +1935,7 @@ namespace CXgoLite {
     }
 
     //% subcategory="Wave"
+    //% color="#004488"
     //% block="do a %wave wave"
     //% block.loc.nl="maak een %wave wave"
     export function setWave(wave: Wave) {
