@@ -1712,11 +1712,6 @@ namespace XgoLite {
     // MESSAGE HANDLING ROUTINES //
     ///////////////////////////////
 
-    radio.onReceivedNumber(function(receivedNumber: number) {
-        MESSAGE = receivedNumber
-        handleMessage()
-    })
-
     function stopMoving() {
         xgo.move_xgo(xgo.direction_enum.Forward, 0)
         xgo.move_xgo(xgo.direction_enum.Left, 0)
