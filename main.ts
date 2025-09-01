@@ -1478,10 +1478,14 @@ namespace xgo {
 
 }
 
+onDisplay(() => {
+    basic.showString("P" + XgoLite.POSITION.toString())
+})
+
 //% color="#FF8800" icon="\uf1f9"
 //% block="XGO Lite"
 //% block.loc.nl="XGO Lite"
-namespace CXgoLite {
+namespace XgoLite {
 
     xgo.init_xgo_serial(SerialPin.P14, SerialPin.P13)
 
@@ -1595,7 +1599,7 @@ namespace CXgoLite {
         Fast
     }
 
-    let POSITION: number = 0 // leader
+    export let POSITION: number = 0 // leader
     let WAVE: number = 0
 
     /////////////////////////
@@ -1707,6 +1711,11 @@ namespace CXgoLite {
     ///////////////////////////////
     // MESSAGE HANDLING ROUTINES //
     ///////////////////////////////
+
+    radio.onReceivedNumber(function(receivedNumber: number) {
+        MESSAGE = receivedNumber
+        handleMessage()
+    })
 
     function stopMoving() {
         xgo.move_xgo(xgo.direction_enum.Forward, 0)
@@ -1858,14 +1867,6 @@ namespace CXgoLite {
         }
         MESSAGE = -1
     }
-
-    function showPosition(): void {
-        basic.showString("P" + POSITION.toString())
-    }
-
-    input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-        showPosition()
-    })
 
     ////////////////////////
     // PROGRAMMING BLOCKS //
