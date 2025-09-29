@@ -1485,7 +1485,7 @@ onDisplay(() => {
 //% color="#FF8800" icon="\uf1f9"
 //% block="XGO Lite"
 //% block.loc.nl="XGO Lite"
-namespace XgoLite {
+namespace XGoLite {
 
     xgo.init_xgo_serial(SerialPin.P14, SerialPin.P13)
 
