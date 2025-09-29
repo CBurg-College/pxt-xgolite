@@ -1479,7 +1479,7 @@ namespace xgo {
 }
 
 onDisplay(() => {
-    basic.showString("P" + XgoLite.POSITION.toString())
+    basic.showString("P" + XGoLite.POSITION.toString())
 })
 
 //% color="#FF8800" icon="\uf1f9"
